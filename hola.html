@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Me perdonas?</title>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes grow {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffebf0;
+            background-image: url('https://www.transparenttextures.com/patterns/rose-paper.png');
+            text-align: center;
+            padding: 50px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h1 {
+            color: #ff66b2;
+            font-size: 48px;
+            animation: pulse 2s infinite;
+        }
+
+        .button-container {
+            margin-top: 50px;
+        }
+
+        .button {
+            background-color: #ffb3d9;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .button-yes {
+            background-color: #ff80bf;
+        }
+
+        .button-no {
+            background-color: #ff80bf; /* Cambiar color para hacerlo visible */
+        }
+
+        .button:hover {
+            animation: grow 0.3s forwards;
+        }
+
+        .message {
+            display: none;
+            font-size: 24px;
+            color: #ff3385;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .message img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>¿Me perdonas?</h1>
+    <div class="button-container">
+        <button class="button button-yes" onclick="showMessage()">Sí</button>
+        <button class="button button-no" onclick="makeYesButtonBigger()">No</button>
+    </div>
+    <div class="message">
+        <p>¡Gracias por perdonarme! Prometo hacer todo lo posible para no volver a herirte. 💖</p>
+        <img src="imagen-tierna.jpg" alt="Imagen tierna">
+    </div>
+
+    <script>
+        const yesButton = document.querySelector('.button-yes');
+        const message = document.querySelector('.message');
+        const buttonContainer = document.querySelector('.button-container');
+
+        const noMessages = [
+            "¿Estás segura?",
+            "Piénsalo bien...",
+            "Estoy aquí esperando...",
+            "¿Seguro que no?",
+            "¿Realmente no me perdonas?"
+        ];
+
+        let currentNoMessageIndex = 0;
+
+        function showMessage() {
+            message.style.display = 'block';
+            yesButton.style.display = 'none';
+            document.querySelector('.button-no').style.display = 'none';
+
+            // Eliminar mensajes anteriores del botón "No"
+            clearNoMessages();
+        }
+
+        function makeYesButtonBigger() {
+            const currentSize = parseInt(window.getComputedStyle(yesButton).fontSize);
+            if (currentSize < window.innerWidth) {
+                yesButton.style.fontSize = `${currentSize + 10}px`;
+                yesButton.style.padding = `${currentSize + 10}px ${currentSize + 20}px`;
+            }
+
+            // Mostrar mensaje de "No"
+            const noMessageElement = document.createElement('p');
+            noMessageElement.textContent = noMessages[currentNoMessageIndex];
+            noMessageElement.style.color = '#ff3385';
+            noMessageElement.style.fontSize = '24px';
+            noMessageElement.style.marginTop = '20px';
+            buttonContainer.appendChild(noMessageElement);
+
+            // Incrementar el índice para mostrar el siguiente mensaje la próxima vez que se presione "No"
+            currentNoMessageIndex = (currentNoMessageIndex + 1) % noMessages.length;
+        }
+
+        function clearNoMessages() {
+            // Buscar y eliminar todos los mensajes de "No" anteriores
+            const previousNoMessages = buttonContainer.querySelectorAll('p');
+            previousNoMessages.forEach(msg => {
+                if (msg.textContent.includes("¿")) { // Verificar si es un mensaje de "No"
+                    msg.remove();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
